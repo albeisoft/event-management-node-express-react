@@ -201,8 +201,12 @@ exports.findAllEventsByCityIdAndDate = (req, res) => {
 
   // req.body.city_id get city_id from POST/PUT or JSON data
   const city_id = req.body.city_id;
-  const date = req.body.date;
-  Event.findAll({ where: { city_id: city_id, date: date } })
+  const startDate = req.body.startDate;
+  const endDate = req.body.endDate;
+
+  Event.findAll({
+    where: { city_id: city_id, date: { [Op.between]: [startDate, endDate] } },
+  })
     .then((data) => {
       res.send(data);
     })
